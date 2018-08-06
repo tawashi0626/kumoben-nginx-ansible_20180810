@@ -1,0 +1,22 @@
+- name: nginx_conf
+  template:
+    src: kumoben.conf
+    dest: /etc/nginx/conf.d/kumoben.conf
+
+- name: kumoben_directory
+  file:
+    path: /usr/share/nginx/kumoben
+    state: directory
+    mode: 0755
+
+- name: nginx_index_html
+  template:
+    src: kumoben_index.html
+    dest: /usr/share/nginx/kumoben/index.html
+  notify:
+    - nginx-restart
+
+- name: nginx-service-restart
+  service:
+    name: nginx
+    state: restarted
